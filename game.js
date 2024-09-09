@@ -17,6 +17,7 @@ let tile_color = [];
 let bg_resolution = [win_width/tile_size, win_height/tile_size];
 let numtiles = bg_resolution[0]*bg_resolution[1];
 let canvas;
+let worldsize = [2400, 2400];
 
 
 function preload() {
@@ -34,6 +35,7 @@ function setup() {
     color(0, 0, 0);
     stroke(0, 0, 0);
     imageMode(CENTER);
+    translate(width/2, height/2);
     character_position = [width/2, height/2];
     character_speed = [0, 0];
     resizeAssets();
@@ -47,8 +49,8 @@ function draw() {
     image(current_character_facing, width/2, height/2);
     checkForMovement();
     updatePosition();
-    print(determineDirection());
-    
+    determineDirection();
+    checkBounds();
 }
 
 function renderFoliage() {
@@ -70,6 +72,7 @@ function renderFoliage() {
 
 function checkForMovement() {
     if (keyIsPressed) {
+        print(character_position);
         if (keyCode === UP_ARROW) {
             character_speed[1] = 5;
         } else if (keyCode === DOWN_ARROW) {
@@ -93,15 +96,17 @@ function resizeAssets(){
     character_img_right.resize(character_size[0], character_size[1]);
     daisy.resize(60,50);
     tulip.resize(80, 90);
-    for (grass of grasses) {
+    for (let grass of grasses) {
         grass[0].resize(50, 50);
     }
+    backgroundimg.resize(worldsize[0], worldsize[1]);
+
 }
 
 function loadAssets() {
-    let daisies_amount = 15;
-    let tulips_amount = 15;
-    let grass_amount = 100;
+    let daisies_amount = 10;
+    let tulips_amount = 10;
+    let grass_amount = 30;
     daisy_assets = [];
     let tulip_assets = [];
     let grass_assets = [];
@@ -126,17 +131,17 @@ function loadAssets() {
     
 
     for(let i=0; i<=daisies_amount; i++) {
-        daisy_assets[i] = [round(random(-800, 800)), round(random(-800, 800))];
+        daisy_assets[i] = [round(random(-worldsize[0], worldsize[1])), round(random(-worldsize[0], worldsize[1]))];
     }
 
     for(let i=0; i<=tulips_amount; i++) {
-        tulip_assets[i] = [round(random(-800, 800)), round(random(-800, 800))];
+        tulip_assets[i] = [round(random(-worldsize[0], worldsize[1])), round(random(-worldsize[0], worldsize[1]))];
     }
 
     for(let i=0; i<=grass_amount; i++) {
         let index = round(random(0,randomgrasses.length-1));
         let grass = randomgrasses[index];
-        grass_assets[i] = [grass, round(random(-800, 800)), round(random(-800, 800))];
+        grass_assets[i] = [grass, round(random(-worldsize[0], worldsize[1])), round(random(-worldsize[0], worldsize[1]))];
         
     }
 
@@ -146,17 +151,22 @@ function loadAssets() {
     
 }
 
-function drawBgTiles(){
-    stroke(0, 10);
-    for (let i = 0; i < width / tile_size; i++) {
-        for (let j = 0; j < height / tile_size; j++) {
-            fill(100, tile_color[j], 75);
-            rect(i * tile_size, j * tile_size, tile_size, tile_size);
-        }
+
+
+function checkBounds(){
+    if (character_position[0] >= worldsize[0]/2) {
+        character_position[0] -= 30;
+    }
+    if (character_position[0] <= 0-(backgroundimg.width/2+400)) {
+        character_position[0] += 30;
+    }
+    if (character_position[1] >= worldsize[1]/2) {
+        character_position[1] -= 30;
+    }
+    if (character_position[1] <= 0) {
+        character_position[1] += 30;
     }
 }
-
-
 
 function updatePosition() {
     character_position[0] += character_speed[0];
