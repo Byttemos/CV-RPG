@@ -1,6 +1,6 @@
-let character_position;
-let character_speed;
-let character_img_front, character_img_back, character_img_left, character_img_right;
+let character_position; //2D array with character's coordinates (pair of ints)
+let character_speed; //2D array with character's speed in x and y directions respectively (pair of ints)
+let character_img_front, character_img_back, character_img_left, character_img_right; //All 4 sides of the character sprite image asset
 let win_width = window.innerWidth;
 let win_height = window.innerHeight;
 let character_size = [150, 150];
@@ -9,12 +9,13 @@ let tile_size = 50;
 let tile_color = [];
 let bg_resolution = [win_width/tile_size, win_height/tile_size];
 let numtiles = bg_resolution[0]*bg_resolution[1];
+let canvas;
 
 function preload() {
-    character_img_front = loadImage ('thorstenfront.png');
-    character_img_back = loadImage ('thorstenback.png');
-    character_img_left = loadImage ('thorstenleft.png');
-    character_img_right = loadImage ('thorstenright.png');
+    character_img_front = loadImage ('./Assets/thorstenfront.png');
+    character_img_back = loadImage ('./Assets/thorstenback.png');
+    character_img_left = loadImage ('./Assets/thorstenleft.png');
+    character_img_right = loadImage ('./Assets/thorstenright.png');
     //for (let i = 0; i < numtiles; i++) { 
     //    tile_color[i] = random(120, 210);
     //}
@@ -27,7 +28,8 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(win_width, win_height);
+    canvas = createCanvas(win_width/2, win_height/2);
+    //canvas.parent('main');
     color(0, 0, 0);
     stroke(0, 0, 0);
     imageMode(CENTER);
@@ -62,6 +64,10 @@ function draw() {
     }
     updatePosition();
     print(determineDirection());
+}
+
+function loadAssets() {
+
 }
 
 function drawBgTiles(){
