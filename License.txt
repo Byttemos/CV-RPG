@@ -1,4 +1,6 @@
 LICENSE
+This is a project made entirely by me. All assets are drawn by me and all code is written by me.
+Should you find any use for any of this, feel free to use it as you please, with a few exceptions
 
 YOU CAN:
 1. USE THESE ASSETS IN COMMERCIAL OR NON-COMMERCIAL PROJECTS.
@@ -7,3 +9,6 @@ YOU CAN:
 YOU CAN NOT:
 1. REDISTRIBUTE THESE ASSETS.
 2. EDIT AND REDISTRIBUTE THESE ASSETS.
+3. USE THESE ASSETS, CLAIMING THEY'RE YOUR OWN
+4. USE THESE ASSETS FOR TRAINING ARTIFICIAL INTELLIGENCES IN ANY WAY
+5. SAY MEAN THINGS ABOUT MY DRAWING BEHIND MY BACK
