@@ -7,6 +7,7 @@ let education_hat; //variable for graduation hat asset
 let coding_laptop; //variable for laptop asset
 let camera; //variable for camera asset
 let backgroundimg; //variable for background image
+let daisies, grasses, tulips; //array of foliage coordinates
 let win_width = window.innerWidth;
 let win_height = window.innerHeight;
 let character_size = [150, 150];
@@ -17,13 +18,14 @@ let bg_resolution = [win_width/tile_size, win_height/tile_size];
 let numtiles = bg_resolution[0]*bg_resolution[1];
 let canvas;
 
+
 function preload() {
     loadAssets();
     for (let i = 0; i < bg_resolution[0]; i++) {
         for (let j = 0; j < bg_resolution[1]; j++) {
             tile_color[j] = random(170, 210);
         }
-    }
+    }   
 }
 
 function setup() {
@@ -46,12 +48,24 @@ function draw() {
     checkForMovement();
     updatePosition();
     print(determineDirection());
+    
 }
 
 function renderFoliage() {
     image(daisy, character_position[0]-200, character_position[1]-200);
     image(daisy, character_position[0]+180, character_position[1]+50);
     image(tulip, character_position[0]-250, character_position[1]+125);
+    for (let daisypos of daisies) {
+        image(daisy, character_position[0]+daisypos[0], character_position[1]+daisypos[1]);
+    }
+    for (let tulippos of tulips) {
+        image(tulip, character_position[0]+tulippos[0], character_position[1]+tulippos[1]);
+    }
+    for (let grasspos of grasses) {
+        image(grasspos[0], character_position[0]+grasspos[1], character_position[1]+grasspos[2]);
+    }
+    
+    
 }
 
 function checkForMovement() {
@@ -79,9 +93,18 @@ function resizeAssets(){
     character_img_right.resize(character_size[0], character_size[1]);
     daisy.resize(60,50);
     tulip.resize(80, 90);
+    for (grass of grasses) {
+        grass[0].resize(50, 50);
+    }
 }
 
 function loadAssets() {
+    let daisies_amount = 15;
+    let tulips_amount = 15;
+    let grass_amount = 100;
+    daisy_assets = [];
+    let tulip_assets = [];
+    let grass_assets = [];
     backgroundimg = loadImage ('./Assets/cvrpgbackground.png');
     character_img_front = loadImage ('./Assets/thorstenfront.png');
     character_img_back = loadImage ('./Assets/thorstenback.png');
@@ -89,10 +112,38 @@ function loadAssets() {
     character_img_right = loadImage ('./Assets/thorstenright.png');
     daisy = loadImage ('./Assets/whitedaisy.png');
     tulip = loadImage ('./Assets/redtulip.png');
+    grass1 = loadImage ('./Assets/grass1.png');
+    grass2 = loadImage ('./Assets/grass2.png');
+    grass3 = loadImage ('./Assets/grass3.png');
+    grass4 = loadImage ('./Assets/grass4.png');
+    grass5 = loadImage ('./Assets/grass5.png');
+    grass6 = loadImage ('./Assets/grass6.png');
     nav_sign = loadImage ('./Assets/navigationsign.png');
     education_hat = loadImage ('./Assets/educationhat.png');
     coding_laptop = loadImage ('./Assets/codinglaptop.png');
     camera = loadImage ('./Assets/camera.png');
+    let randomgrasses = [grass1, grass2, grass3, grass4, grass5, grass6];
+    
+
+    for(let i=0; i<=daisies_amount; i++) {
+        daisy_assets[i] = [round(random(-800, 800)), round(random(-800, 800))];
+    }
+
+    for(let i=0; i<=tulips_amount; i++) {
+        tulip_assets[i] = [round(random(-800, 800)), round(random(-800, 800))];
+    }
+
+    for(let i=0; i<=grass_amount; i++) {
+        let index = round(random(0,randomgrasses.length-1));
+        let grass = randomgrasses[index];
+        grass_assets[i] = [grass, round(random(-800, 800)), round(random(-800, 800))];
+        
+    }
+
+    daisies = daisy_assets;
+    tulips = tulip_assets;
+    grasses = grass_assets;
+    
 }
 
 function drawBgTiles(){
@@ -107,12 +158,6 @@ function drawBgTiles(){
 
 
 
-window.onresize = function() {
-    win_width = window.innerWidth;
-    win_height = window.innerHeight;
-    canvas.size(win_width, win_height);
-}
-
 function updatePosition() {
     character_position[0] += character_speed[0];
     character_position[1] += character_speed[1];
@@ -121,18 +166,18 @@ function updatePosition() {
 function determineDirection() {
     if (character_speed[0] > 0) {
         current_character_facing = character_img_left;
-    return 'RIGHT';
+    
     } else if (character_speed[0] < 0) {
         current_character_facing = character_img_right;
-        return 'LEFT';
+        
     } else if (character_speed[1] > 0) {
         current_character_facing = character_img_back;
-        return 'DOWN';
+        
     } else if (character_speed[1] < 0) {
         current_character_facing = character_img_front
-        return 'UP';
+        
     } else {
         current_character_facing = character_img_front;
-        return 'DOWN';
+       
     }
 }
